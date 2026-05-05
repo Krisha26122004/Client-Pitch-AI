@@ -19,6 +19,12 @@ import aiRoutes from "./routes/ai.js";
 import contactRoutes from "./routes/contact.js";
 
 const app = express();
+
+// Root route for deployment verification
+app.get("/", (req, res) => {
+    res.send("🚀 ClientPitch AI API is Running...");
+});
+
 const allowedOrigins = [
     process.env.CLIENT_URL,
     "http://localhost:5173",
