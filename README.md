@@ -1,35 +1,38 @@
-# 🚀 ClientPitch AI
+ClientPitch AI
 
-A premium MERN stack application designed to help users generate, manage, and share professional client pitches using Gemini AI.
+ClientPitch AI is a full-stack application built to simplify one of the most time-consuming parts of freelancing and client work — writing high-quality pitches.
 
-## 🛠 Tech Stack
-- **Frontend**: React (Vite), Tailwind CSS, Framer Motion
-- **Backend**: Node.js, Express
-- **Database**: MongoDB Atlas
-- **AI**: Google Gemini Pro & Flash
-- **Payments**: Razorpay & Stripe
-- **Email**: Nodemailer
+Instead of staring at a blank screen, users can generate structured, professional pitches in seconds using AI, then refine, save, and reuse them as needed.
 
-## 📂 Project Structure
-- `/client`: React frontend
-- `/server`: Node.js Express backend
+Why this project exists
 
-## 🚀 Deployment Status
-- **Backend**: [Deploy on Render](https://render.com/)
-- **Frontend**: [Deploy on Vercel](https://vercel.com/)
+Writing client pitches repeatedly can get exhausting, especially when you're trying to sound both professional and personalized every time.
+This project aims to remove that friction by combining a clean workflow with AI assistance.
 
-## 📝 Setup Instructions
-1. **Clone the repo**: `git clone https://github.com/Krisha26122004/Client-Pitch-AI.git`
-2. **Setup Backend**:
-   - `cd server`
-   - `npm install`
-   - Create `.env` from `.env.example`
-   - `npm start`
-3. **Setup Frontend**:
-   - `cd client`
-   - `npm install`
-   - Create `.env` from `.env.example`
-   - `npm run dev`
+It’s not just a generator — it’s a small system to create, manage, and actually use pitches efficiently.
 
----
-Built with ❤️ by Antigravity for Krisha.
+What you can do with it
+Generate client pitches using AI based on your input
+Save and manage multiple pitches in one place
+Edit or refine generated content before using it
+Send pitches directly via email
+Unlock additional features through payment integration
+Tech Stack
+
+The project is built using a modern MERN-based setup:
+
+Frontend:-
+React (with Vite)
+Tailwind CSS
+Framer Motion
+
+Backend:-
+Node.js
+Express
+Database
+MongoDB Atlas
+
+Integrations:-
+Google Gemini (AI generation)
+Razorpay & Stripe (payments)
+Nodemailer (email handling)
