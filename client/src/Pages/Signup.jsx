@@ -1,7 +1,7 @@
-import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../api/axiosConfig";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      const res = await axios.post("/api/auth/signup", {
+      const res = await axiosInstance.post("/api/auth/signup", {
         fullName: fullName.trim(),
         email: email.toLowerCase().trim(),
         password: password.trim(),

@@ -2,8 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import connectDB from "./config/db.js";
 
 // Models
@@ -19,31 +20,56 @@ import aiRoutes from "./routes/ai.js";
 import contactRoutes from "./routes/contact.js";
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const clientDistPath = path.resolve(__dirname, "../client/dist");
 
 // Root route for deployment verification
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     res.send("🚀 ClientPitch AI API is Running...");
 });
 
 const allowedOrigins = [
-    process.env.CLIENT_URL,
+    ...(process.env.CLIENT_URL || "").split(","),
+    ...(process.env.CLIENT_URLS || "").split(","),
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-].filter(Boolean);
+].map((origin) => origin.trim()).filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+    if (!origin) return true;
+    if (allowedOrigins.includes(origin)) return true;
+
+    try {
+        const { hostname, protocol } = new URL(origin);
+        return protocol === "https:" && hostname.endsWith(".vercel.app");
+    } catch {
+        return false;
+    }
+};
 
 // Middleware
 app.use(cors({
     origin(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (isAllowedOrigin(origin)) {
             callback(null, true);
             return;
         }
 
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error(`Not allowed by CORS: ${origin}`));
     },
     credentials: true,
 }));
 app.use(express.json());
+
+app.get("/api/health", (req, res) => {
+    res.json({
+        status: "ok",
+        service: "ClientPitch AI API",
+        allowedOrigins,
+        mongoConfigured: Boolean(process.env.MONGO_URI),
+    });
+});
 
 // 1. Status Route
 app.get("/api/user-status/:userId", async (req, res) => {
@@ -71,6 +97,14 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/contact", contactRoutes);
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(clientDistPath));
+
+    app.get(/^(?!\/api).*/, (req, res) => {
+        res.sendFile(path.join(clientDistPath, "index.html"));
+    });
+}
 
 // Database
 connectDB();
