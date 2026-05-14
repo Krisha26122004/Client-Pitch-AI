@@ -98,13 +98,11 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/contact", contactRoutes);
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(clientDistPath));
+// In split deployment, Vercel handles the frontend, so we don't need to serve static files here.
+app.get("/", (req, res) => {
+    res.send("🚀 ClientPitch AI API is Running...");
+});
 
-    app.get(/^(?!\/api).*/, (req, res) => {
-        res.sendFile(path.join(clientDistPath, "index.html"));
-    });
-}
 
 // Database
 connectDB();
